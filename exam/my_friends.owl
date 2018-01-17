@@ -1,0 +1,235 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns="http://www.semanticweb.org/iiiiii/ontologies/2018/0/friends_ontology#"
+     xml:base="http://www.semanticweb.org/iiiiii/ontologies/2018/0/friends_ontology"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
+    <owl:Ontology rdf:about="http://www.semanticweb.org/iiiiii/ontologies/2018/0/friends_ontology"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Annotation properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/iiiiii/ontologies/2018/0/friends_ontology#hidden -->
+
+    <owl:AnnotationProperty rdf:about="http://www.semanticweb.org/iiiiii/ontologies/2018/0/friends_ontology#hidden"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/iiiiii/ontologies/2018/0/friends_ontology#isConsist -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/iiiiii/ontologies/2018/0/friends_ontology#isConsist">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AsymmetricProperty"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#IrreflexiveProperty"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/iiiiii/ontologies/2018/0/friends_ontology#qwerty -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/iiiiii/ontologies/2018/0/friends_ontology#qwerty"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Data properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/iiiiii/ontologies/2018/0/friends_ontology#first_name -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/iiiiii/ontologies/2018/0/friends_ontology#first_name">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/iiiiii/ontologies/2018/0/friends_ontology#id -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/iiiiii/ontologies/2018/0/friends_ontology#id">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/iiiiii/ontologies/2018/0/friends_ontology#last_name -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/iiiiii/ontologies/2018/0/friends_ontology#last_name">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/iiiiii/ontologies/2018/0/friends_ontology#photo -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/iiiiii/ontologies/2018/0/friends_ontology#photo">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/iiiiii/ontologies/2018/0/friends_ontology#Document -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/iiiiii/ontologies/2018/0/friends_ontology#Document">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/iiiiii/ontologies/2018/0/friends_ontology#VKontakte"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/iiiiii/ontologies/2018/0/friends_ontology#Group -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/iiiiii/ontologies/2018/0/friends_ontology#Group">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/iiiiii/ontologies/2018/0/friends_ontology#VKontakte"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/iiiiii/ontologies/2018/0/friends_ontology#Image -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/iiiiii/ontologies/2018/0/friends_ontology#Image">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/iiiiii/ontologies/2018/0/friends_ontology#Document"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/iiiiii/ontologies/2018/0/friends_ontology#OnlineAccount -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/iiiiii/ontologies/2018/0/friends_ontology#OnlineAccount">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/iiiiii/ontologies/2018/0/friends_ontology#VKontakte"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/iiiiii/ontologies/2018/0/friends_ontology#Organization -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/iiiiii/ontologies/2018/0/friends_ontology#Organization">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/iiiiii/ontologies/2018/0/friends_ontology#VKontakte"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/iiiiii/ontologies/2018/0/friends_ontology#Person -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/iiiiii/ontologies/2018/0/friends_ontology#Person">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/iiiiii/ontologies/2018/0/friends_ontology#Group"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/iiiiii/ontologies/2018/0/friends_ontology#Organization"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/iiiiii/ontologies/2018/0/friends_ontology#PersonDocument -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/iiiiii/ontologies/2018/0/friends_ontology#PersonDocument">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/iiiiii/ontologies/2018/0/friends_ontology#Document"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/iiiiii/ontologies/2018/0/friends_ontology#VKontakte -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/iiiiii/ontologies/2018/0/friends_ontology#VKontakte"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Individuals
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/iiiiii/ontologies/2018/0/friends_ontology#my_groups -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/iiiiii/ontologies/2018/0/friends_ontology#my_groups">
+        <rdf:type rdf:resource="http://www.semanticweb.org/iiiiii/ontologies/2018/0/friends_ontology#Group"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/iiiiii/ontologies/2018/0/friends_ontology#person_0 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/iiiiii/ontologies/2018/0/friends_ontology#person_0">
+        <rdf:type rdf:resource="http://www.semanticweb.org/iiiiii/ontologies/2018/0/friends_ontology#Person"/>
+        <first_name>Михаил</first_name>
+        <id>51708253</id>
+        <last_name>Ковалёв</last_name>
+        <photo>https://pp.userapi.com/c631322/v631322253/162bc/Jtx36jHT2K4.jpg</photo>
+    </owl:NamedIndividual>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#PropertyAssertion"/>
+        <owl:sourceIndividual rdf:resource="http://www.semanticweb.org/iiiiii/ontologies/2018/0/friends_ontology#person_0"/>
+        <owl:assertionProperty rdf:resource="http://www.semanticweb.org/iiiiii/ontologies/2018/0/friends_ontology#isConsist"/>
+        <owl:targetIndividual rdf:resource="http://www.semanticweb.org/iiiiii/ontologies/2018/0/friends_ontology#my_groups"/>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#PropertyAssertion"/>
+        <owl:sourceIndividual rdf:resource="http://www.semanticweb.org/iiiiii/ontologies/2018/0/friends_ontology#person_0"/>
+        <owl:assertionProperty rdf:resource="http://www.semanticweb.org/iiiiii/ontologies/2018/0/friends_ontology#qwerty"/>
+        <owl:targetIndividual rdf:resource="http://www.semanticweb.org/iiiiii/ontologies/2018/0/friends_ontology#my_groups"/>
+    </rdf:Description>
+    
+
+
+    <!-- http://www.semanticweb.org/iiiiii/ontologies/2018/0/friends_ontology#person_1 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/iiiiii/ontologies/2018/0/friends_ontology#person_1">
+        <rdf:type rdf:resource="http://www.semanticweb.org/iiiiii/ontologies/2018/0/friends_ontology#Person"/>
+        <first_name>Артур</first_name>
+        <id>69128170</id>
+        <last_name>Пинчуков</last_name>
+        <photo>https://pp.userapi.com/c841423/v841423015/50af3/7zoh38Xup2o.jpg</photo>
+        <hidden>1</hidden>
+    </owl:NamedIndividual>
+</rdf:RDF>
+
+
+
+<!-- Generated by the OWL API (version 4.2.8.20170104-2310) https://github.com/owlcs/owlapi -->
+
