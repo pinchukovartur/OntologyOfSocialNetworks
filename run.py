@@ -6,7 +6,7 @@ from utils.owl_lib import ProtegeParser, OntologyClass, OntologyIndividual
 from utils.adapter_from_vk_in_owl_classes import CreteOWLModels
 from utils.vk_adapter import *
 from utils.vk_models import *
-from create_owl_file import create_classes
+from create_owl_file import OwlCreator
 # data_properties = ["first_name", "last_name", "id", "subscribers"]
 
 
@@ -17,7 +17,8 @@ parser = Parser()
 tmp1, tmp2, tmp3 = parser.parse_vk_response_base(vk_util.base_info(69128170)[0])
 #print(next(iter(tmp1)).name, next(iter(tmp2)).name, next(iter(tmp3)).name)
 #print(vk_util.base_info(69128170)[0])
-content = create_classes([University, Faculty, Person])
+owl = OwlCreator("vk_2", [tmp1, tmp2, tmp3])
+content = owl.create_classes()
 #exit()
 
 protege = ProtegeParser(ONTOLOGY_NAME)

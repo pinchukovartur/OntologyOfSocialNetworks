@@ -1,0 +1,83 @@
+<?xml version="1.0"?>
+        <rdf:RDF xmlns="http://www.semanticweb.org/iiiiii/ontologies/2018/0/vk_2#"
+             xml:base="http://www.semanticweb.org/iiiiii/ontologies/2018/0/vk_2"
+             xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+             xmlns:owl="http://www.w3.org/2002/07/owl#"
+             xmlns:xml="http://www.w3.org/XML/1998/namespace"
+             xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+             xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
+             
+             <owl:Ontology rdf:about="http://www.semanticweb.org/iiiiii/ontologies/2018/0/vk_2"/>
+
+<owl:Class rdf:about="http://www.semanticweb.org/iiiiii/ontologies/2018/0/vk_2#Person">
+	<rdfs:subClassOf rdf:resource="http://www.semanticweb.org/iiiiii/ontologies/2018/0/vk_2#Faculty"/>
+</owl:Class>
+
+<owl:DatatypeProperty rdf:about="http://www.semanticweb.org/iiiiii/ontologies/2018/0/vk_2#name">
+	<rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+	<rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="http://www.semanticweb.org/iiiiii/ontologies/2018/0/vk_2#id">
+	<rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+	<rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="http://www.semanticweb.org/iiiiii/ontologies/2018/0/vk_2#surname">
+	<rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+	<rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+</owl:DatatypeProperty>
+
+<owl:ObjectProperty rdf:about="http://www.semanticweb.org/iiiiii/ontologies/2018/0/vk_2#isStudy"/>
+
+<owl:NamedIndividual rdf:about="http://www.semanticweb.org/iiiiii/ontologies/2018/0/vk_2#69128170">
+<rdf:type rdf:resource="http://www.semanticweb.org/iiiiii/ontologies/2018/0/vk_2#Person"/>
+  <name>Артур</name>
+  <id>69128170</id>
+  <surname>Пинчуков</surname>
+<isStudy rdf:resource="http://www.semanticweb.org/iiiiii/ontologies/2018/0/vk_2#15785"/>
+</owl:NamedIndividual>
+
+<owl:Class rdf:about="http://www.semanticweb.org/iiiiii/ontologies/2018/0/vk_2#Faculty">
+	<rdfs:subClassOf rdf:resource="http://www.semanticweb.org/iiiiii/ontologies/2018/0/vk_2#University"/>
+</owl:Class>
+
+<owl:DatatypeProperty rdf:about="http://www.semanticweb.org/iiiiii/ontologies/2018/0/vk_2#name">
+	<rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+	<rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="http://www.semanticweb.org/iiiiii/ontologies/2018/0/vk_2#id">
+	<rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+	<rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+</owl:DatatypeProperty>
+
+<owl:ObjectProperty rdf:about="http://www.semanticweb.org/iiiiii/ontologies/2018/0/vk_2#isBelongs"/>
+
+<owl:NamedIndividual rdf:about="http://www.semanticweb.org/iiiiii/ontologies/2018/0/vk_2#15785">
+<rdf:type rdf:resource="http://www.semanticweb.org/iiiiii/ontologies/2018/0/vk_2#Faculty"/>
+  <name>Факультет информационных технологий и управления</name>
+  <id>15785</id>
+<isBelongs rdf:resource="http://www.semanticweb.org/iiiiii/ontologies/2018/0/vk_2#94448"/>
+</owl:NamedIndividual>
+
+<owl:Class rdf:about="http://www.semanticweb.org/iiiiii/ontologies/2018/0/vk_2#University"/>
+
+<owl:DatatypeProperty rdf:about="http://www.semanticweb.org/iiiiii/ontologies/2018/0/vk_2#name">
+	<rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+	<rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+</owl:DatatypeProperty>
+
+<owl:DatatypeProperty rdf:about="http://www.semanticweb.org/iiiiii/ontologies/2018/0/vk_2#id">
+	<rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+	<rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+</owl:DatatypeProperty>
+
+<owl:NamedIndividual rdf:about="http://www.semanticweb.org/iiiiii/ontologies/2018/0/vk_2#94448">
+<rdf:type rdf:resource="http://www.semanticweb.org/iiiiii/ontologies/2018/0/vk_2#University"/>
+  <name>БГУИР (бывш. МРТИ)</name>
+  <id>94448</id>
+</owl:NamedIndividual>
+
+
+</rdf:RDF>

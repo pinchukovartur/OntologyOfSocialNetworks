@@ -82,10 +82,6 @@ class ProtegeParser:
                        + self.__check_value(str(value)) + \
                        '</' + self.__check_value(str(key)) + '>\n'
 
-        """
-        <isConsist rdf:resource="http://www.semanticweb.org/iiiiii/ontologies/2018/0/friends_ontology#100419172"/>
-        """
-
         # если сущность не имеет описания, возвращаем что есть
 
         if descriptions == "":
@@ -128,7 +124,7 @@ class ProtegeParser:
         :param data_properties: dict свойств
         :return: строку с даннывими
         """
-        if type(data_properties) != list:
+        if type(data_properties) != set:
             raise NameError("data_properties должен быть типа list")
 
         content = ""

@@ -3,8 +3,8 @@ token url = https://oauth.vk.com/authorize?client_id=6320433&display=page&scope=
 """
 
 # vk settings
-TOKEN = ""
+TOKEN = "45d75918190d9a0fc3b4058afe1278b9cf3c83e51dbe9e50db02fa13c7dd0fdf42fab004682dbd31dcee9"
 API_VERSION = "5.69"
 
 # protege settings
-ONTOLOGY_NAME = "vk"
+ONTOLOGY_NAME = "vk_2"
