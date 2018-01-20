@@ -20,8 +20,8 @@ for friend in vk_util.friends(69128170)["items"]:
     parser.parse_vk_response_base(vk_util.base_info(friend["id"])[0])
 parser.parse_vk_response_base(vk_util.base_info(69128170)[0])
 
-persons, faculties, universities, countries, cities = parser.get_set_entities()
-owl.create_owl_content_in_parser([persons, faculties, universities, countries, cities])
+persons, faculties, universities, countries, cities, organizations = parser.get_set_entities()
+owl.create_owl_content_in_parser([persons, faculties, universities, countries, cities, organizations])
 content += owl.get_content()
 
 

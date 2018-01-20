@@ -1,4 +1,4 @@
-from utils.vk_models import University, Faculty, Person, Country, City
+from utils.vk_models import University, Faculty, Person, Country, City, Organization
 
 
 class Parser:
@@ -11,6 +11,7 @@ class Parser:
         self.universities = set()
         self.countries = set()
         self.cities = set()
+        self.organizations = set()
 
     @staticmethod
     def _find_by_id_in_set(id_entity, set_entities):
@@ -25,13 +26,20 @@ class Parser:
         :param dict_base:
         :return:
         """
-
         # создаем человека
         list_faculties, list_universities = self.parse_person_universities(dict_base)
-        person = self.parse_person_data(dict_base, list_faculties)
 
         country = self.parse_country(dict_base)
         city = self.parse_city(dict_base, country)
+
+        person = self.parse_person_data(dict_base, list_faculties, city)
+
+        organization = self.parse_organization(dict_base)
+
+        if organization:
+            if not organization.is_consist_in(self.organizations) and organization is not None:
+                self.organizations.add(organization)
+
         # добавляем все в массивы с сущностями
         if not person.is_consist_in(self.persons) and person is not None:
             self.persons.add(person)
@@ -57,7 +65,13 @@ class Parser:
         if "country" in dict_base.keys():
             return Country(dict_base["country"]["id"], dict_base["country"]["title"])
 
-
+    def parse_organization(self, dict_base):
+        if "career" in dict_base.keys():
+            if len(dict_base["career"]) > 0:
+                if "company" in dict_base["career"][0]:
+                    return Organization(0, dict_base["career"][0]["company"])
+        else:
+            return ""
 
     def parse_city(self, dict_base, country):
         """
@@ -65,14 +79,29 @@ class Parser:
         """
         if "city" in dict_base.keys():
             return City(dict_base["city"]["id"], dict_base["city"]["title"], country)
-        else:
-            return ""
 
     def get_set_entities(self):
-        return self.persons, self.faculties, self.universities, self.countries, self.cities
+        return self.persons, self.faculties, self.universities, self.countries, self.cities, self.organizations
 
-    def parse_person_data(self, dict_base, faculty):
-        return Person(dict_base["id"], dict_base["first_name"], dict_base["last_name"], faculty)
+    def parse_person_data(self, dict_base, faculties, city):
+        if dict_base["sex"] == 1:
+            sex = "женский"
+        elif dict_base["sex"] == 2:
+            sex = "мужской"
+        else:
+            sex = ""
+
+        print(dict_base.keys())
+        return Person(dict_base["id"], dict_base["first_name"], dict_base["last_name"], sex,
+                      self.__check_dict_key("about", dict_base), self.__check_dict_key("activities", dict_base),
+                      self.__check_dict_key("bdate", dict_base), self.__check_dict_key("books", dict_base),
+                      faculties, city)
+
+    def __check_dict_key(self, dict_key, dict_base):
+        if dict_key in dict_base.keys():
+            return dict_base[dict_key]
+        else:
+            return ""
 
     def parse_person_universities(self, dict_base):
         # создаем университет
