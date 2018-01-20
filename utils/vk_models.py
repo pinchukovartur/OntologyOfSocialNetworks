@@ -18,6 +18,7 @@ class Base:
         return []
 
     @staticmethod
+    @abstractmethod
     def get_class_name():
         pass
 
@@ -37,9 +38,8 @@ class Base:
                        '</' + str(key) + '>\n'
         return content
 
-    @staticmethod
     @abstractmethod
-    def get_references():
+    def get_references(self):
         return []
 
     @abstractmethod
@@ -52,18 +52,18 @@ class Base:
         if len(parents) > 0:
             for parent in parents:
                 content += """<owl:Class rdf:about="http://www.semanticweb.org/iiiiii/ontologies/2018/0/""" \
-                          + ontology_name + """#""" + str(self.get_class_name()) + """">\n""" + \
-                          """\t<rdfs:subClassOf rdf:resource="http://www.semanticweb.org/iiiiii/ontologies/2018/0/""" \
-                          + ontology_name + """#""" + str(parent) + """"/>\n</owl:Class>\n\n"""
+                           + ontology_name + """#""" + str(self.get_class_name()) + """">\n""" + \
+                           """\t<rdfs:subClassOf rdf:resource="http://www.semanticweb.org/iiiiii/ontologies/2018/0/""" \
+                           + ontology_name + """#""" + str(parent) + """"/>\n</owl:Class>\n\n"""
         else:
             content += """<owl:Class rdf:about="http://www.semanticweb.org/iiiiii/ontologies/2018/0/""" \
-                  + ontology_name + """#""" + str(self.get_class_name()) + """"/>\n\n"""
+                       + ontology_name + """#""" + str(self.get_class_name()) + """"/>\n\n"""
         return content
 
-    def create_data_properties(self, ontology_name):
-
+    @staticmethod
+    def create_data_properties(ontology_name, attributes):
         content = ""
-        for property_key in self.get_attributes().keys():
+        for property_key in attributes:
             content += """<owl:DatatypeProperty rdf:about="http://www.semanticweb.org/iiiiii/ontologies/2018/0/""" + \
                        ontology_name + """#""" + str(property_key) + """">\n""" + \
                        """\t<rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>\n""" + \
@@ -71,12 +71,12 @@ class Base:
                        """</owl:DatatypeProperty>\n\n"""
         return content
 
-    def create_object_properties(self, ontology_name):
-
+    @staticmethod
+    def create_object_properties(ontology_name, references):
         content = ""
-        for property_key in self.get_references():
-            content += """<owl:ObjectProperty rdf:about="http://www.semanticweb.org/iiiiii/ontologies/2018/0/"""+ \
-                        ontology_name + """#""" + property_key + """"/>\n\n"""
+        for property_key in references:
+            content += """<owl:ObjectProperty rdf:about="http://www.semanticweb.org/iiiiii/ontologies/2018/0/""" + \
+                       ontology_name + """#""" + property_key + """"/>\n\n"""
         return content
 
 
@@ -86,14 +86,16 @@ class Person(Base):
         attributes["surname"] = self.surname
         return attributes
 
-    @staticmethod
-    def get_references():
-        return ["isStudy"]
+    def get_references(self):
+        return {"isStudy": self.faculties}
 
     def create_owl_content(self, ontology_name):
         content = super().create_owl_content(ontology_name)
-        content += "<" + "isStudy" + """ rdf:resource="http://www.semanticweb.org/iiiiii/ontologies/2018/0/""" + \
-                   ontology_name + "#" + str(self.faculty.id) + '"/>\n'
+        if self.faculties:
+            for faculty in self.faculties:
+                content += "<" + str(list(self.get_references().keys())[0]) + \
+                           """ rdf:resource="http://www.semanticweb.org/iiiiii/ontologies/2018/0/""" + \
+                           ontology_name + "#" + str(faculty.id) + '"/>\n'
 
         content += """</owl:NamedIndividual>\n\n"""
         return content
@@ -106,10 +108,10 @@ class Person(Base):
     def get_parents():
         return ["Faculty"]
 
-    def __init__(self, id_person, name, surname, faculty):
+    def __init__(self, id_person, name, surname, faculties):
         super().__init__(id_person, name)
         self.surname = surname
-        self.faculty = faculty
+        self.faculties = faculties
 
 
 class Faculty(Base):
@@ -118,15 +120,15 @@ class Faculty(Base):
 
     def create_owl_content(self, ontology_name):
         content = super().create_owl_content(ontology_name)
-        content += "<" + "isBelongs" + """ rdf:resource="http://www.semanticweb.org/iiiiii/ontologies/2018/0/""" + \
+        content += "<" + str(list(self.get_references().keys())[0]) + \
+                   """ rdf:resource="http://www.semanticweb.org/iiiiii/ontologies/2018/0/""" + \
                    ontology_name + "#" + str(self.university.id) + '"/>\n'
 
         content += """</owl:NamedIndividual>\n\n"""
         return content
 
-    @staticmethod
-    def get_references():
-        return ["isBelongs"]
+    def get_references(self):
+        return {"isBelongs": self.university}
 
     @staticmethod
     def get_class_name():
@@ -150,9 +152,8 @@ class University(Base):
         content += """</owl:NamedIndividual>\n\n"""
         return content
 
-    @staticmethod
-    def get_references():
-        return []
+    def get_references(self):
+        return {}
 
     @staticmethod
     def get_class_name():
@@ -164,3 +165,56 @@ class University(Base):
 
     def __init__(self, id_university, name):
         super().__init__(id_university, name)
+
+
+class Country(Base):
+    def __init__(self, id_county, name):
+        super().__init__(id_county, name)
+
+    def get_attributes(self):
+        return super().get_attributes()
+
+    def get_references(self):
+        return {}
+
+    @staticmethod
+    def get_parents():
+        return []
+
+    @staticmethod
+    def get_class_name():
+        return "Country"
+
+    def create_owl_content(self, ontology_name):
+        content = super().create_owl_content(ontology_name)
+        content += """</owl:NamedIndividual>\n\n"""
+        return content
+
+
+class City(Base):
+    @staticmethod
+    def get_class_name():
+        return "City"
+
+    def __init__(self, id_city, name, country):
+        super().__init__(id_city, name)
+        self.country = country
+
+    def get_attributes(self):
+        return super().get_attributes()
+
+    def get_references(self):
+        return {"isIn": self.country}
+
+    @staticmethod
+    def get_parents():
+        return ["Country"]
+
+    def create_owl_content(self, ontology_name):
+        content = super().create_owl_content(ontology_name)
+        content += "<" + str(list(self.get_references().keys())[0]) + \
+                   """ rdf:resource="http://www.semanticweb.org/iiiiii/ontologies/2018/0/""" + \
+                   ontology_name + "#" + str(self.country.id) + '"/>\n'
+
+        content += """</owl:NamedIndividual>\n\n"""
+        return content

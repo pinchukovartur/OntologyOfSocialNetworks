@@ -18,7 +18,7 @@ class VKUtil:
         return req_url
 
     def base_info(self, id):
-        fields = "universities,schools"
+        fields = "universities,schools,country,city"
         r = requests.get(self.request_url('users.get', 'user_id=' + str(id) + '&fields=' + fields, access_token=True)).json()
         if 'error' in r.keys():
             raise VkException('Error message: %s. Error code: %s' % (r['error']['error_msg'], r['error']['error_code']))
