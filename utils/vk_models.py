@@ -4,7 +4,7 @@ from abc import abstractmethod
 class Base:
     def __init__(self, id_entity, name):
         self.name = name
-        self.id = id_entity
+        self.id = str(id_entity).replace('"', "").replace(" ", "_")
 
     def is_consist_in(self, entity_set):
         for entity in entity_set:
@@ -25,7 +25,8 @@ class Base:
     @abstractmethod
     def create_owl_content(self, ontology_name):
         content = """<owl:NamedIndividual rdf:about="http://www.semanticweb.org/iiiiii/ontologies/2018/0/""" \
-                  + ontology_name + """#""" + str(self.id) + """">\n"""
+                  + ontology_name + """#""" + str(self.id) \
+                  + """">\n"""
 
         # назначаем группу для сущности
         content += """<rdf:type rdf:resource="http://www.semanticweb.org/iiiiii/ontologies/2018/0/""" \
@@ -93,7 +94,7 @@ class Person(Base):
         return attributes
 
     def get_references(self):
-        return {"isStudy": self.faculties, "isLive": self.city}
+        return {"isStudy": [self.faculties, self.schools], "isLive": self.city, "isWork": self.organization}
 
     def create_owl_content(self, ontology_name):
         content = super().create_owl_content(ontology_name)
@@ -102,10 +103,22 @@ class Person(Base):
                 content += "<" + str(list(self.get_references().keys())[0]) + \
                            """ rdf:resource="http://www.semanticweb.org/iiiiii/ontologies/2018/0/""" + \
                            ontology_name + "#" + str(faculty.id) + '"/>\n'
-            if self.city is not None:
+
+        if self.schools:
+            for school in self.schools:
+                content += "<" + str(list(self.get_references().keys())[0]) + \
+                           """ rdf:resource="http://www.semanticweb.org/iiiiii/ontologies/2018/0/""" + \
+                           ontology_name + "#" + str(school.id) + '"/>\n'
+
+        if self.city is not None:
                 content += "<" + str(list(self.get_references().keys())[1]) + \
                            """ rdf:resource="http://www.semanticweb.org/iiiiii/ontologies/2018/0/""" + \
                            ontology_name + "#" + str(self.city.id) + '"/>\n'
+        if self.organization is not None:
+                content += "<" + str(list(self.get_references().keys())[2]) + \
+                           """ rdf:resource="http://www.semanticweb.org/iiiiii/ontologies/2018/0/""" + \
+                           ontology_name + "#" + str(self.organization.id) + '"/>\n'
+
         content += """</owl:NamedIndividual>\n\n"""
         return content
 
@@ -115,10 +128,10 @@ class Person(Base):
 
     @staticmethod
     def get_parents():
-        return ["Faculty", "City"]
+        return ["Faculty", "City", "School", "Organization"]
 
     def __init__(self, id_person, name, surname, sex, about_self, activities, bdate, books,
-                 faculties, city):
+                 faculties, city, organization, schools):
         """
         :param id_person: id человека в вк
         :param name: имя
@@ -130,6 +143,8 @@ class Person(Base):
         :param books: любимые книги (поле)
         :param faculties: факультеты где обучался человек(Объект)
         :param city: город проэивания(Объект)
+        :param organization: место работы
+        :param schools: школа
         """
         super().__init__(id_person, name)
         self.surname = surname
@@ -140,6 +155,8 @@ class Person(Base):
         self.books = books
         self.faculties = faculties
         self.city = city
+        self.organization = organization
+        self.schools = schools
 
 
 class Faculty(Base):
@@ -177,11 +194,15 @@ class University(Base):
 
     def create_owl_content(self, ontology_name):
         content = super().create_owl_content(ontology_name)
+        if self.city:
+            content += "<" + str(list(self.get_references().keys())[0]) + \
+                       """ rdf:resource="http://www.semanticweb.org/iiiiii/ontologies/2018/0/""" + \
+                       ontology_name + "#" + str(self.city.id) + '"/>\n'
         content += """</owl:NamedIndividual>\n\n"""
         return content
 
     def get_references(self):
-        return {}
+        return {"isConsist": self.city}
 
     @staticmethod
     def get_class_name():
@@ -191,8 +212,9 @@ class University(Base):
     def get_parents():
         return []
 
-    def __init__(self, id_university, name):
+    def __init__(self, id_university, name, city):
         super().__init__(id_university, name)
+        self.city = city
 
 
 class Country(Base):
@@ -267,3 +289,32 @@ class Organization(Base):
         content = super().create_owl_content(ontology_name)
         content += """</owl:NamedIndividual>\n\n"""
         return content
+
+
+class School(Base):
+    def __init__(self, id_school, name, city):
+        super().__init__(id_school, name)
+        self.city = city
+
+    def create_owl_content(self, ontology_name):
+        content = super().create_owl_content(ontology_name)
+        if self.city is not None:
+            content += "<" + str(list(self.get_references().keys())[0]) + \
+                       """ rdf:resource="http://www.semanticweb.org/iiiiii/ontologies/2018/0/""" + \
+                       ontology_name + "#" + str(self.city.id) + '"/>\n'
+        content += """</owl:NamedIndividual>\n\n"""
+        return content
+
+    @staticmethod
+    def get_parents():
+        return []
+
+    def get_references(self):
+        return {"isIn": self.city}
+
+    def get_attributes(self):
+        return super().get_attributes()
+
+    @staticmethod
+    def get_class_name():
+        return "School"

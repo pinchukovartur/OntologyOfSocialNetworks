@@ -1,4 +1,4 @@
-from utils.vk_models import University, Faculty, Person, Country, City, Organization
+from utils.vk_models import University, Faculty, Person, Country, City, Organization, School
 
 
 class Parser:
@@ -12,6 +12,7 @@ class Parser:
         self.countries = set()
         self.cities = set()
         self.organizations = set()
+        self.schools = set()
 
     @staticmethod
     def _find_by_id_in_set(id_entity, set_entities):
@@ -32,13 +33,17 @@ class Parser:
         country = self.parse_country(dict_base)
         city = self.parse_city(dict_base, country)
 
-        person = self.parse_person_data(dict_base, list_faculties, city)
-
         organization = self.parse_organization(dict_base)
+        schools = self.parse_school(dict_base)
+        person = self.parse_person_data(dict_base, list_faculties, city, organization, schools)
 
         if organization:
             if not organization.is_consist_in(self.organizations) and organization is not None:
                 self.organizations.add(organization)
+        if schools:
+            for school in schools:
+                if not school.is_consist_in(self.schools) and school is not None:
+                    self.schools.add(school)
 
         # добавляем все в массивы с сущностями
         if not person.is_consist_in(self.persons) and person is not None:
@@ -58,6 +63,14 @@ class Parser:
             if not city.is_consist_in(self.cities) and city is not None:
                 self.cities.add(city)
 
+    def parse_school(self, dict_base):
+        list_schools = list()
+        if "schools" in dict_base.keys():
+            for school in dict_base["schools"]:
+                list_schools.append(School(school["id"], school["name"], self.get_entity_by_id(
+                    school["city"])))
+        return list_schools
+
     def parse_country(self, dict_base):
         """
         'country': {'id': 3, 'title': 'Беларусь'},
@@ -69,9 +82,7 @@ class Parser:
         if "career" in dict_base.keys():
             if len(dict_base["career"]) > 0:
                 if "company" in dict_base["career"][0]:
-                    return Organization(0, dict_base["career"][0]["company"])
-        else:
-            return ""
+                    return Organization(dict_base["career"][0]["company"], dict_base["career"][0]["company"])
 
     def parse_city(self, dict_base, country):
         """
@@ -81,21 +92,19 @@ class Parser:
             return City(dict_base["city"]["id"], dict_base["city"]["title"], country)
 
     def get_set_entities(self):
-        return self.persons, self.faculties, self.universities, self.countries, self.cities, self.organizations
+        return self.persons, self.faculties, self.universities, self.countries, self.cities, self.organizations, self.schools
 
-    def parse_person_data(self, dict_base, faculties, city):
+    def parse_person_data(self, dict_base, faculties, city, organization, schools):
         if dict_base["sex"] == 1:
             sex = "женский"
         elif dict_base["sex"] == 2:
             sex = "мужской"
         else:
             sex = ""
-
-        print(dict_base.keys())
         return Person(dict_base["id"], dict_base["first_name"], dict_base["last_name"], sex,
                       self.__check_dict_key("about", dict_base), self.__check_dict_key("activities", dict_base),
                       self.__check_dict_key("bdate", dict_base), self.__check_dict_key("books", dict_base),
-                      faculties, city)
+                      faculties, city, organization, schools)
 
     def __check_dict_key(self, dict_key, dict_base):
         if dict_key in dict_base.keys():
@@ -110,10 +119,35 @@ class Parser:
         if "universities" in dict_base.keys():
             # создаем университет
             for university in dict_base["universities"]:
-                list_universities.append(University(university["id"], university["name"]))
+                print(university)
+                list_universities.append(
+                    University(university["id"], university["name"], self.get_entity_by_id(university["city"])))
                 # создаем факультет
                 if "faculty" in university.keys():
                     list_faculties.append(Faculty(university["faculty"],
                                                   university["faculty_name"], University(university["id"],
-                                                                                         university["name"])))
+                                                                                         university["name"],
+                                                                                         self.get_entity_by_id(
+                                                                                             university["city"]))))
         return list_faculties, list_universities
+
+    def get_entity_by_id(self, id):
+        for person in self.persons:
+            if person.id == id:
+                return person
+        for faculty in self.faculties:
+            if faculty.id == id:
+                return faculty
+        for university in self.universities:
+            if university.id == id:
+                return university
+        for country in self.countries:
+            if country.id == id:
+                return country
+        for city in self.cities:
+            if city.id == id:
+                return city
+        for organization in self.organizations:
+            if organization.id == id:
+                return organization
+        return None

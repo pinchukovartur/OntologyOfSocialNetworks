@@ -18,7 +18,7 @@ class VKUtil:
         return req_url
 
     def base_info(self, id):
-        fields = "universities,schools,country,city,sex,books,bdate,activities,about,career"
+        fields = "universities,schools,country,city,sex,books,bdate,activities,about,career,schools"
         r = requests.get(self.request_url('users.get', 'user_id=' + str(id) + '&fields=' + fields,
                                           access_token=True)).json()
         if 'error' in r.keys():

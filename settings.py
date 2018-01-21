@@ -3,7 +3,7 @@ token url = https://oauth.vk.com/authorize?client_id=6320433&display=page&scope=
 """
 
 # vk settings
-TOKEN = "29096c6e5e33225543b50a8dc56c70ae5d38dbe5ad2efcf713ee8479b00e7c8a0ac6c3ef693f151193c2c"
+TOKEN = "670e921fffc9eb0e644d2cbf87a4a46d1f86a7c0202c31f9417bee54575b4c632ea6f7735d1ab2eea628f"
 API_VERSION = "5.69"
 
 # protege settings
