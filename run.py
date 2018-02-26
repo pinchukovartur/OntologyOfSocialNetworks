@@ -18,6 +18,7 @@ parser = VkParser()
 # download all info from main user friends
 for friend in vk_util.friends(MAIN_USER_ID)["items"]:
     vk_response = vk_util.base_info(friend["id"])[0]
+    vk_response["groups"] = vk_util.get_subscriptions(friend["id"])
     parser.parse_vk_response_base(vk_response)
 
 # parse main user
@@ -30,9 +31,12 @@ countries = parser.get_countries()
 cities = parser.get_cities()
 organizations = parser.get_organizations()
 schools = parser.get_schools()
+photos = parser.get_photos()
+military = parser.get_military()
+groups = parser.get_groups()
 
 # create owl file content
-content = owl.create_owl_content_in_parser([persons, faculties, universities, countries, cities, organizations, schools])
+content = owl.create_owl_content_in_parser([persons, faculties, universities, countries, cities, organizations, schools, photos, military, groups])
 
 # create file
 protege = OWLFileManager(ONTOLOGY_NAME)

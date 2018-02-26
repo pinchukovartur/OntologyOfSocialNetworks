@@ -19,7 +19,9 @@ class VKUtil:
         return req_url
 
     def base_info(self, id):
-        fields = "universities,schools,country,city,sex,books,bdate,activities,about,career,schools"
+        fields = "universities,schools,country,city,sex,books,bdate,activities,about,career,schools," \
+                 "photo_50, photo_100, photo_200_orig, photo_200, photo_400_orig, photo_max, photo_max_orig," \
+                 "military"
         r = requests.get(self.request_url('users.get', 'user_id=' + str(id) + '&fields=' + fields,
                                           access_token=True)).json()
         if 'error' in r.keys():
@@ -33,4 +35,12 @@ class VKUtil:
         if 'error' in r.keys():
             raise VkException('Error message: %s. Error code: %s' % (r['error']['error_msg'], r['error']['error_code']))
         r = r['response']
+        return r
+
+    def get_subscriptions(self, id):
+        r = requests.get(self.request_url('users.getSubscriptions', 'user_id=' + str(id) + "&extended=1",
+                                          access_token=True)).json()
+        if 'error' in r.keys():
+            raise VkException('Error message: %s. Error code: %s' % (r['error']['error_msg'], r['error']['error_code']))
+        r = r['response']["items"]
         return r

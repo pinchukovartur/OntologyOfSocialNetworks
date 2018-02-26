@@ -4,7 +4,7 @@ from abc import abstractmethod
 class Base:
     def __init__(self, id_entity, name):
         self.name = name
-        self.id = str(id_entity).replace('"', "").replace(" ", "_")
+        self.id = str(id_entity).replace('"', "").replace(" ", "_").replace("&", "")
 
     def is_consist_in(self, entity_set):
         for entity in entity_set:
@@ -94,7 +94,7 @@ class Person(Base):
         return attributes
 
     def get_references(self):
-        return {"isStudy": [self.faculties, self.schools], "isLive": self.city, "isWork": self.organization}
+        return {"isStudy": [self.faculties, self.schools], "isLive": self.city, "isWork": self.organization, "isServe": self.military, "isComposed": self.groups}
 
     def create_owl_content(self, ontology_name):
         content = super().create_owl_content(ontology_name)
@@ -118,6 +118,16 @@ class Person(Base):
                 content += "<" + str(list(self.get_references().keys())[2]) + \
                            """ rdf:resource="http://www.semanticweb.org/iiiiii/ontologies/2018/0/""" + \
                            ontology_name + "#" + str(self.organization.id) + '"/>\n'
+        if self.military is not None:
+                content += "<" + str(list(self.get_references().keys())[3]) + \
+                           """ rdf:resource="http://www.semanticweb.org/iiiiii/ontologies/2018/0/""" + \
+                           ontology_name + "#" + str(self.military.id) + '"/>\n'
+
+        if self.groups:
+            for group in self.groups:
+                content += "<" + str(list(self.get_references().keys())[4]) + \
+                           """ rdf:resource="http://www.semanticweb.org/iiiiii/ontologies/2018/0/""" + \
+                           ontology_name + "#" + str(group.id) + '"/>\n'
 
         content += """</owl:NamedIndividual>\n\n"""
         return content
@@ -128,10 +138,10 @@ class Person(Base):
 
     @staticmethod
     def get_parents():
-        return ["Faculty", "City", "School", "Organization"]
+        return ["Faculty", "City", "School", "Organization", "Military", "Group"]
 
     def __init__(self, id_person, name, surname, sex, about_self, activities, bdate, books,
-                 faculties, city, organization, schools):
+                 faculties, city, organization, schools, military, groups):
         """
         :param id_person: id человека в вк
         :param name: имя
@@ -157,6 +167,8 @@ class Person(Base):
         self.city = city
         self.organization = organization
         self.schools = schools
+        self.military = military
+        self.groups = groups
 
 
 class Faculty(Base):
@@ -210,7 +222,7 @@ class University(Base):
 
     @staticmethod
     def get_parents():
-        return []
+        return ["City"]
 
     def __init__(self, id_university, name, city):
         super().__init__(id_university, name)
@@ -307,7 +319,7 @@ class School(Base):
 
     @staticmethod
     def get_parents():
-        return []
+        return ["City"]
 
     def get_references(self):
         return {"isIn": self.city}
@@ -318,3 +330,85 @@ class School(Base):
     @staticmethod
     def get_class_name():
         return "School"
+
+
+class Photo(Base):
+    def __init__(self, id_photo, name, person):
+        super().__init__(id_photo, name)
+        self.person = person
+
+    def get_references(self):
+        return {"isBelongs": self.person}
+
+    def get_attributes(self):
+        return super().get_attributes()
+
+    @staticmethod
+    def get_parents():
+        return ["Person"]
+
+    def create_owl_content(self, ontology_name):
+        content = super().create_owl_content(ontology_name)
+        if self.person is not None:
+            content += "<" + str(list(self.get_references().keys())[0]) + \
+                       """ rdf:resource="http://www.semanticweb.org/iiiiii/ontologies/2018/0/""" + \
+                       ontology_name + "#" + str(self.person.id) + '"/>\n'
+        content += """</owl:NamedIndividual>\n\n"""
+        return content
+
+    @staticmethod
+    def get_class_name():
+        return "Photo"
+
+
+class Military(Base):
+    def __init__(self, id_military, name, country):
+        super().__init__(id_military, name)
+        self.country = country
+
+    def get_references(self):
+        return {"isIn": self.country}
+
+    def get_attributes(self):
+        return super().get_attributes()
+
+    @staticmethod
+    def get_parents():
+        return ["Country"]
+
+    def create_owl_content(self, ontology_name):
+        content = super().create_owl_content(ontology_name)
+        if self.country is not None:
+            content += "<" + str(list(self.get_references().keys())[0]) + \
+                       """ rdf:resource="http://www.semanticweb.org/iiiiii/ontologies/2018/0/""" + \
+                       ontology_name + "#" + str(self.country.id) + '"/>\n'
+        content += """</owl:NamedIndividual>\n\n"""
+        return content
+
+    @staticmethod
+    def get_class_name():
+        return "Military"
+
+
+class Group(Base):
+    def __init__(self, id_group, name):
+        super().__init__(id_group, name)
+
+    def get_references(self):
+        return {}
+
+    def get_attributes(self):
+        return super().get_attributes()
+
+    @staticmethod
+    def get_parents():
+        return []
+
+    def create_owl_content(self, ontology_name):
+        content = super().create_owl_content(ontology_name)
+        content += """</owl:NamedIndividual>\n\n"""
+        return content
+
+    @staticmethod
+    def get_class_name():
+        return "Group"
