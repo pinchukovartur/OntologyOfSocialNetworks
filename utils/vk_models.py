@@ -3,7 +3,7 @@ from abc import abstractmethod
 
 class Base:
     def __init__(self, id_entity, name):
-        self.name = name
+        self.name = str(name).replace('"', "").replace(" ", "_").replace("&", "")
         self.id = str(id_entity).replace('"', "").replace(" ", "_").replace("&", "")
 
     def is_consist_in(self, entity_set):
