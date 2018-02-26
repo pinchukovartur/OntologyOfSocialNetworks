@@ -1,11 +1,8 @@
 from utils.vk_models import University, Faculty, Person, Country, City, Organization, School
 
 
-class Parser:
+class VkParser:
     def __init__(self):
-        """
-        Инициализация множест сущностей
-        """
         self.persons = set()
         self.faculties = set()
         self.universities = set()
@@ -91,9 +88,6 @@ class Parser:
         if "city" in dict_base.keys():
             return City(dict_base["city"]["id"], dict_base["city"]["title"], country)
 
-    def get_set_entities(self):
-        return self.persons, self.faculties, self.universities, self.countries, self.cities, self.organizations, self.schools
-
     def parse_person_data(self, dict_base, faculties, city, organization, schools):
         if dict_base["sex"] == 1:
             sex = "женский"
@@ -119,7 +113,6 @@ class Parser:
         if "universities" in dict_base.keys():
             # создаем университет
             for university in dict_base["universities"]:
-                print(university)
                 list_universities.append(
                     University(university["id"], university["name"], self.get_entity_by_id(university["city"])))
                 # создаем факультет
@@ -151,3 +144,28 @@ class Parser:
             if organization.id == id:
                 return organization
         return None
+
+    """
+    GETERS
+    """
+
+    def get_persons(self):
+        return self.persons
+
+    def get_faculties(self):
+        return self.faculties
+
+    def get_universities(self):
+        return self.universities
+
+    def get_countries(self):
+        return self.countries
+
+    def get_cities(self):
+        return self.cities
+
+    def get_organizations(self):
+        return self.organizations
+
+    def get_schools(self):
+        return self.schools
