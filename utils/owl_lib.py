@@ -16,7 +16,16 @@ class OWLFileManager:
              xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
              
              <owl:Ontology rdf:about="http://www.semanticweb.org/iiiiii/ontologies/2018/0/""" \
-            + self.ontology_name + """"/>\n"""
+            + self.ontology_name + """"/>\n""" + \
+            """
+            <!--
+            Generate by OntologyOfSocialNetworks
+            
+            github: https://github.com/pinchukovartur/OntologyOfSocialNetworks
+            author: Pinchukov Artur
+            date: 27.02.2018
+            -->
+            """
         self.footer = """\n</rdf:RDF>"""
 
         self.list_replaces = ["$", "&", "%", "#", "№", "@", "!", "*", "<", ">"]
