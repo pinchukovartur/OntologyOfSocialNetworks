@@ -2,6 +2,7 @@
 from utils.vk_api import VKUtil
 from utils.owl_lib import OWLFileManager
 from utils.vk_adapter import VkParser
+from utils.vk_models import get_all_classes
 
 from settings import TOKEN, API_VERSION, ONTOLOGY_NAME, MAIN_USER_ID
 from create_owl_file import OwlCreator
@@ -9,9 +10,10 @@ from create_owl_file import OwlCreator
 # create vk lib
 vk_util = VKUtil(TOKEN, API_VERSION)
 # create owl lib
-owl = OwlCreator(ONTOLOGY_NAME)
+owl = OwlCreator(ONTOLOGY_NAME, get_all_classes())
 # create vk parser
 parser = VkParser()
+
 
 
 # start download vk data
@@ -19,6 +21,10 @@ parser = VkParser()
 for friend in vk_util.friends(MAIN_USER_ID)["items"]:
     vk_response = vk_util.base_info(friend["id"])[0]
     vk_response["groups"] = vk_util.get_subscriptions(friend["id"])
+    for group in vk_response["groups"]:
+        if group["type"] != "page":
+            print(group["type"])
+    #print(vk_response["groups"])
     parser.parse_vk_response_base(vk_response)
 
 # parse main user
@@ -35,11 +41,12 @@ photos = parser.get_photos()
 military = parser.get_military()
 groups = parser.get_groups()
 
+
 # create owl file content
 content = owl.create_owl_content_in_parser([persons, faculties, universities, countries, cities, organizations, schools, photos, military, groups])
 
 # create file
 protege = OWLFileManager(ONTOLOGY_NAME)
-protege.create_owl_file("D:\\", "VkUsers.owl", content)
+protege.create_owl_file("E:\\", "VkUsers.owl", content)
 
 

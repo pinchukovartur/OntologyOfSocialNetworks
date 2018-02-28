@@ -1,3 +1,4 @@
+import pyclbr
 from abc import abstractmethod
 
 
@@ -48,18 +49,18 @@ class Base:
     def get_attributes(self):
         return {"name": self.name, "id": self.id}
 
-    def create_owl_class(self, ontology_name):
-        parents = self.get_parents()
+    @staticmethod
+    def create_owl_class(ontology_name, parents, class_name):
         content = ""
         if len(parents) > 0:
             for parent in parents:
                 content += """<owl:Class rdf:about="http://www.semanticweb.org/iiiiii/ontologies/2018/0/""" \
-                           + ontology_name + """#""" + str(self.get_class_name()) + """">\n""" + \
+                           + ontology_name + """#""" + str(class_name) + """">\n""" + \
                            """\t<rdfs:subClassOf rdf:resource="http://www.semanticweb.org/iiiiii/ontologies/2018/0/""" \
                            + ontology_name + """#""" + str(parent) + """"/>\n</owl:Class>\n\n"""
         else:
             content += """<owl:Class rdf:about="http://www.semanticweb.org/iiiiii/ontologies/2018/0/""" \
-                       + ontology_name + """#""" + str(self.get_class_name()) + """"/>\n\n"""
+                       + ontology_name + """#""" + str(class_name) + """"/>\n\n"""
         return content
 
     @staticmethod
@@ -94,7 +95,8 @@ class Person(Base):
         return attributes
 
     def get_references(self):
-        return {"isStudy": [self.faculties, self.schools], "isLive": self.city, "isWork": self.organization, "isServe": self.military, "isComposed": self.groups}
+        return {"isStudy": [self.faculties, self.schools], "isLive": self.city, "isWork": self.organization,
+                "isServe": self.military, "isComposed": self.groups}
 
     def create_owl_content(self, ontology_name):
         content = super().create_owl_content(ontology_name)
@@ -111,17 +113,17 @@ class Person(Base):
                            ontology_name + "#" + str(school.id) + '"/>\n'
 
         if self.city is not None:
-                content += "<" + str(list(self.get_references().keys())[1]) + \
-                           """ rdf:resource="http://www.semanticweb.org/iiiiii/ontologies/2018/0/""" + \
-                           ontology_name + "#" + str(self.city.id) + '"/>\n'
+            content += "<" + str(list(self.get_references().keys())[1]) + \
+                       """ rdf:resource="http://www.semanticweb.org/iiiiii/ontologies/2018/0/""" + \
+                       ontology_name + "#" + str(self.city.id) + '"/>\n'
         if self.organization is not None:
-                content += "<" + str(list(self.get_references().keys())[2]) + \
-                           """ rdf:resource="http://www.semanticweb.org/iiiiii/ontologies/2018/0/""" + \
-                           ontology_name + "#" + str(self.organization.id) + '"/>\n'
+            content += "<" + str(list(self.get_references().keys())[2]) + \
+                       """ rdf:resource="http://www.semanticweb.org/iiiiii/ontologies/2018/0/""" + \
+                       ontology_name + "#" + str(self.organization.id) + '"/>\n'
         if self.military is not None:
-                content += "<" + str(list(self.get_references().keys())[3]) + \
-                           """ rdf:resource="http://www.semanticweb.org/iiiiii/ontologies/2018/0/""" + \
-                           ontology_name + "#" + str(self.military.id) + '"/>\n'
+            content += "<" + str(list(self.get_references().keys())[3]) + \
+                       """ rdf:resource="http://www.semanticweb.org/iiiiii/ontologies/2018/0/""" + \
+                       ontology_name + "#" + str(self.military.id) + '"/>\n'
 
         if self.groups:
             for group in self.groups:
@@ -138,7 +140,7 @@ class Person(Base):
 
     @staticmethod
     def get_parents():
-        return ["Faculty", "City", "School", "Organization", "Military", "Group"]
+        return []
 
     def __init__(self, id_person, name, surname, sex, about_self, activities, bdate, books,
                  faculties, city, organization, schools, military, groups):
@@ -193,7 +195,7 @@ class Faculty(Base):
 
     @staticmethod
     def get_parents():
-        return ["University"]
+        return []
 
     def __init__(self, id_faculty, name, university):
         super().__init__(id_faculty, name)
@@ -222,7 +224,7 @@ class University(Base):
 
     @staticmethod
     def get_parents():
-        return ["City"]
+        return ["Organization"]
 
     def __init__(self, id_university, name, city):
         super().__init__(id_university, name)
@@ -270,7 +272,7 @@ class City(Base):
 
     @staticmethod
     def get_parents():
-        return ["Country"]
+        return []
 
     def create_owl_content(self, ontology_name):
         content = super().create_owl_content(ontology_name)
@@ -319,7 +321,7 @@ class School(Base):
 
     @staticmethod
     def get_parents():
-        return ["City"]
+        return ["Organization"]
 
     def get_references(self):
         return {"isIn": self.city}
@@ -345,7 +347,7 @@ class Photo(Base):
 
     @staticmethod
     def get_parents():
-        return ["Person"]
+        return ["Document"]
 
     def create_owl_content(self, ontology_name):
         content = super().create_owl_content(ontology_name)
@@ -374,7 +376,7 @@ class Military(Base):
 
     @staticmethod
     def get_parents():
-        return ["Country"]
+        return ["Organization"]
 
     def create_owl_content(self, ontology_name):
         content = super().create_owl_content(ontology_name)
@@ -390,7 +392,7 @@ class Military(Base):
         return "Military"
 
 
-class Group(Base):
+class Community(Base):
     def __init__(self, id_group, name):
         super().__init__(id_group, name)
 
@@ -411,4 +413,37 @@ class Group(Base):
 
     @staticmethod
     def get_class_name():
+        return "Community"
+
+
+class Group(Community):
+    def __init__(self, id_group, name):
+        super().__init__(id_group, name)
+
+    @staticmethod
+    def get_class_name():
         return "Group"
+
+    @staticmethod
+    def get_parents():
+        return ["Community"]
+
+
+class Page(Community):
+    def __init__(self, id_group, name):
+        super().__init__(id_group, name)
+
+    @staticmethod
+    def get_class_name():
+        return "Page"
+
+    @staticmethod
+    def get_parents():
+        return ["Community"]
+
+
+
+def get_all_classes():
+    return [Page, Group, Community, Military, Photo, School, Organization, City, Country, Faculty, Person, University]
+
+

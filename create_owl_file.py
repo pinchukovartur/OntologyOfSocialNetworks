@@ -2,7 +2,7 @@ from utils.vk_models import Base
 
 
 class OwlCreator:
-    def __init__(self, ontology_name, ):
+    def __init__(self, ontology_name, classes):
         """
         Init method
         :param ontology_name: name ontology in owl file
@@ -11,12 +11,15 @@ class OwlCreator:
         self.content = "\n"
         self.data_properties = set()
         self.references = set()
+        self.classes = classes
 
     def create_owl_content_in_parser(self, entity_sets):
+        # create classes ontology
+        for owl_class in self.classes:
+            self.content += owl_class.create_owl_class(self.ontology_name, owl_class.get_parents(), owl_class.get_class_name())
+
         # passage through entities
         for entity_set in entity_sets:
-            # create classes ontology
-            self.create_class(entity_set)
             for entity in entity_set:
                 self.add_data_properties(entity.get_attributes().keys())
                 self.add_references(entity.get_references().keys())
@@ -36,7 +39,3 @@ class OwlCreator:
         for ref in list_references:
             self.references.add(ref)
 
-    def create_class(self, set_entity):
-        if len(set_entity) > 0:
-            # get first entity and get her classes
-            self.content += list(set_entity)[0].create_owl_class(self.ontology_name)

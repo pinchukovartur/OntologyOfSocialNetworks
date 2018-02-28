@@ -1,4 +1,4 @@
-from utils.vk_models import University, Faculty, Person, Country, City, Organization, School, Photo, Military, Group
+from utils.vk_models import University, Faculty, Person, Country, City, Organization, School, Photo, Military, Community, Group, Page
 
 
 class VkParser:
@@ -27,7 +27,6 @@ class VkParser:
         :param dict_base:
         :return:
         """
-        print(dict_base)
         # создаем человека
 
         # first lvl
@@ -79,7 +78,10 @@ class VkParser:
         if "groups" in dict_base.keys():
             for group in dict_base["groups"]:
                 if "id" in group.keys() and "name" in group.keys():
-                    self.groups.add(Group(group["id"], group["name"]))
+                    if group["type"] == "group":
+                        self.groups.add(Group(group["id"], group["name"]))
+                    elif group["type"] == "page":
+                        self.groups.add(Page(group["id"], group["name"]))
 
     def parse_military(self, dict_base):
         if "military" in dict_base.keys() and len(dict_base["military"]) > 0:
@@ -144,7 +146,7 @@ class VkParser:
         if "groups" in dict_base.keys() and len(dict_base["groups"]) > 0:
             for group in dict_base["groups"]:
                 if "id" in group.keys() and "name" in group.keys():
-                    set_groups.add(Group(group["id"], group["name"]))
+                    set_groups.add(Community(group["id"], group["name"]))
 
         return Person(dict_base["id"], dict_base["first_name"], dict_base["last_name"], sex,
                       self.__check_dict_key("about", dict_base), self.__check_dict_key("activities", dict_base),
